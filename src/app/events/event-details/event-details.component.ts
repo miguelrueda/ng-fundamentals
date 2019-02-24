@@ -22,7 +22,10 @@ export class EventDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.event = this.eventsService.getEvent(+this.route.snapshot.params['id']);
+        this.route.params.forEach(prm => {
+            this.event = this.eventsService.getEvent(+prm['id']);
+            this.addMode = false;
+        });
     }
 
     addSession() {

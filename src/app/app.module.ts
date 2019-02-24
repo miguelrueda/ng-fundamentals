@@ -11,7 +11,10 @@ import {
   EventThumbnailComponent,
   CreateSessionComponent,
   SessionListComponent,
-  DurationPipe
+  DurationPipe,
+  UpvoteComponent,
+  VoterService,
+  LocationValidator
 } from './events/index'
 
 import { EventsAppComponent } from './events-app.component';
@@ -40,7 +43,9 @@ let jQuery = window['$'];
     CollapsibleWellComponent,
     DurationPipe,
     SimpleModalComponent,
-    ModalTriggerDirective
+    ModalTriggerDirective,
+    UpvoteComponent,
+    LocationValidator
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -63,7 +68,8 @@ let jQuery = window['$'];
       useValue: checkDirtyState
     },
     EventListResolver,
-    AuthService
+    AuthService,
+    VoterService
   ],
   bootstrap: [EventsAppComponent]
 })

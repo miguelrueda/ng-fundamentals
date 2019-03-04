@@ -63,7 +63,7 @@ let jQuery = window['$'];
     },  {
       provide: JQ_TOKEN,
       useValue: jQuery
-    }
+    },
     {
       provide: 'canDeactivateCreateEvent', 
       useValue: checkDirtyState

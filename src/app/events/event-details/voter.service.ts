@@ -1,19 +1,42 @@
 import { Injectable } from "@angular/core";
 import { ISession } from "../shared/event.model";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { catchError } from "rxjs/operators";
+import { Observable, of } from "rxjs";
 
 @Injectable()
 export class VoterService {
 
-    deleteVoter(session: ISession, votername: string) {
-        session.voters = session.voters.filter(voter => voter !== votername);
+    constructor(private http: HttpClient) {
+
     }
 
-    addVoter(session: ISession, votername: string) {
+    deleteVoter(eventId: number, session: ISession, votername: string) {
+        session.voters = session.voters.filter(voter => voter !== votername);
+        const url = `/api/events/${eventId}/sessions/${session.id}/voters/${votername}`;
+        this.http.delete(url).pipe(
+            catchError(this.handleError('deleteVoter'))
+        ).subscribe();
+    }
+
+    addVoter(eventId: number, session: ISession, votername: string) {
         session.voters.push(votername);
+        const options = { headers: new HttpHeaders({'Content-Type': 'application/json'})};
+        const url = `/api/events/${eventId}/sessions/${session.id}/voters/${votername}`;
+        this.http.post(url, {}, options).pipe(
+            catchError(this.handleError('addVoter'))
+        ).subscribe();
     }
 
     userHasVoted(session: ISession, votername: string): boolean {
         return session.voters.some(voter => voter === votername);
+    }
+
+    private handleError<T> (operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+            console.error(error);
+            return of(result as T);
+        }
     }
 
 }

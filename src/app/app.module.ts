@@ -6,7 +6,6 @@ import {
   EventsService,
   EventDetailsComponent,
   CreateEventComponent,
-  EventRouteActivator,
   EventListResolver,
   EventThumbnailComponent,
   CreateSessionComponent,
@@ -14,7 +13,8 @@ import {
   DurationPipe,
   UpvoteComponent,
   VoterService,
-  LocationValidator
+  LocationValidator,
+  EventResolver
 } from './events/index'
 
 import { EventsAppComponent } from './events-app.component';
@@ -25,6 +25,7 @@ import { appRoutes } from './routes';
 import { Error404Component } from './errors/404.component';
 import { AuthService } from './user/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 let toastr: Toastr = window['toastr'];
 let jQuery = window['$'];
@@ -51,7 +52,8 @@ let jQuery = window['$'];
     RouterModule.forRoot(appRoutes),
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     EventsService, 
@@ -61,12 +63,12 @@ let jQuery = window['$'];
     },  {
       provide: JQ_TOKEN,
       useValue: jQuery
-    },
-    EventRouteActivator,
+    }
     {
       provide: 'canDeactivateCreateEvent', 
       useValue: checkDirtyState
     },
+    EventResolver,
     EventListResolver,
     AuthService,
     VoterService
